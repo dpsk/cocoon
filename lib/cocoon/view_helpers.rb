@@ -12,7 +12,7 @@ module Cocoon
     # - *f* : the form this link should be placed in
     # - *html_options*:  html options to be passed to link_to (see <tt>link_to</tt>)
     # - *&block*:        the output of the block will be show in the link, see <tt>link_to</tt>
-    
+
     def link_to_remove_association(*args, &block)
       if block_given?
         f            = args.first
@@ -90,8 +90,9 @@ module Cocoon
     # will create new Comment with author "Admin"
 
     def create_object(f, association, force_non_association_create=false)
-      assoc = f.object.class.reflect_on_association(association)
-
+      # assoc = f.object.class.reflect_on_association(association)
+      klass = f.object.class
+      assoc = klass.respond_to?(:reflect_on_association) ? klass.reflect_on_association(association) : nil
       assoc ? create_object_on_association(f, association, assoc, force_non_association_create) : create_object_on_non_association(f, association)
     end
 
